@@ -10,7 +10,7 @@
   "author": {
       "name": "Marvin Poul",
       "email": "ponder@creshal.de"
-  }
+  },
   "license": "MIT",
   "dependencies": {
     "argdown-parser": "git+https://github.com/christianvoigt/argdown-parser.git"
