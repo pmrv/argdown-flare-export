@@ -1,0 +1,18 @@
+{
+  "name": "argdown-flare-export",
+  "version": "0.1.0",
+  "description": "Add json export for sunburst-style visualization",
+  "main": "src/main.js",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/ponderstibbons/argdown-flare-export.git"
+  },
+  "author": {
+      "name": "Marvin Poul",
+      "email": "ponder@creshal.de"
+  }
+  "license": "MIT",
+  "dependencies": {
+    "argdown-parser": "git+https://github.com/christianvoigt/argdown-parser.git"
+  }
+}
