@@ -12,7 +12,7 @@ The tree is constructed from the following rules:
    respective arguments or to the root node if they don't belong to any
 
 ## Usage
-From src/ run `node main.js path/to/argdown path/to/json`,
+From src/ run `node index.js path/to/argdown path/to/json`,
 to read the .argdown file from path/to/argdown and write the resulting tree in
 json format to path/to/json.
 Both arguments can be omitted or replaced by '-' to use stdin/stdout.
