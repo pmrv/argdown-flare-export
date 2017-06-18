@@ -11,9 +11,8 @@ The tree is constructed from the following rules:
 3. the statements in the debate are the terminal nodes and are added to their
    respective arguments or to the root node if they don't belong to any
 
-## TODO
-
-* the main.js doesn't work as a stand-alone application, yet (or at all)
-* the plug-in puts the generated tree in the `data.flare` attribute of the data
-  objection maintained by the `ArgdownApplication`, but there's currently no
-  way to write it back to a file
+## Usage
+From src/ run `node main.js path/to/argdown path/to/json`,
+to read the .argdown file from path/to/argdown and write the resulting tree in
+json format to path/to/json.
+Both arguments can be omitted or replaced by '-' to use stdin/stdout.
