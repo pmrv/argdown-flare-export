@@ -23,7 +23,7 @@ function add_node(root, child) {
 }
 
 function add_section(root, section) {
-    add_node(flare_tree, make_node(section));
+    add_node(root, make_node(section));
     if (section.children === null && section.children.length === 0) return;
 
     for (var child of section.children) {
@@ -56,16 +56,18 @@ class FlareExport {
             children: []
         };
 
+        let json = JSON.parse(data.json);
+
         // we could also just copy the whole section tree from the original
         // data.json structure, but since this is cheap I'd rather do the clean
         // thing and build it completely new, with only the necessary
         // attributes
-        for (let section of data.json.sections) {
+        for (let section of json.sections) {
             add_section(data.flare, section);
         }
 
-        for (let arg_name in data.json.arguments) {
-            let arg = data.json.arguments[arg_name];
+        for (let arg_name in json.arguments) {
+            let arg = json.arguments[arg_name];
             let arg_node = make_node(arg);
             // the same section might appear multiple times in .pcs, so lets
             // just use a set here
@@ -94,8 +96,8 @@ class FlareExport {
             }
         }
 
-        for (let statement_name in data.json.statements) {
-            s = data.json.statements[statement_name];
+        for (let statement_name in json.statements) {
+            let s = json.statements[statement_name];
             if (s.isUsedAsPremise) continue;
 
             if (s.members.length > 0 && "section" in s.members[0]) {
