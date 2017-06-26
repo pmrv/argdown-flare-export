@@ -27,10 +27,9 @@ input.on('end', () => {
 
     app.addPlugin(new argdown.ParserPlugin(), "parse");
     app.addPlugin(new argdown.ModelPlugin(), "build");
-    app.addPlugin(new argdown.JSONExport(), "export");
     app.addPlugin(new flare.FlareExport(), "process-flare");
 
-    let data = app.run(["parse", "build", "export", "process-flare"],
+    let data = app.run(["parse", "build", "process-flare"],
                         {input: input});
 
     output.write(JSON.stringify(data.flare), "utf8");

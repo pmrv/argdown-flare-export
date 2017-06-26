@@ -1,12 +1,24 @@
 #!/usr/bin/env node
 
+const argdown = require("argdown-parser");
+
 // takes a node from the original data structure and copies only the needed
 // attributes into new node
-function make_node(node) {
+function make_node(node, type) {
+    // TODO: guess type from attributes, uh oh
+    let level;
+    if (type === "section" && "level" in node) {
+        level = node.level;
+    }
     return {
-        id: node.id,
         name: node.title,
-        children: []
+        children: [],
+        // attributes unrelated for d3 vis
+        meta: {
+            id: node.id,
+            type: type,
+            level: level
+        }
     };
 }
 
@@ -14,7 +26,11 @@ function make_node(node) {
 function make_terminal(node) {
     return {
         name: node.title,
-        size: 1
+        size: 1,
+        meta: {
+            text: node.text,
+            type: "statement",
+        }
     };
 }
 
@@ -23,16 +39,17 @@ function add_node(root, child) {
 }
 
 function add_section(root, section) {
-    add_node(root, make_node(section));
-    if (section.children === null && section.children.length === 0) return;
+    let section_node = make_node(section, "section");
+    add_node(root, section_node);
+    if (section.children === null || section.children.length === 0) return;
 
     for (var child of section.children) {
-        add_section(root, child);
+        add_section(section_node, child);
     }
 }
 
 function find_section(root, section_id) {
-    if (root.id === section_id) return root;
+    if (root.meta.id === section_id) return root;
     if (! ("children" in root) ) return null;
 
     for (var child of root.children) {
@@ -51,53 +68,45 @@ class FlareExport {
 
     run(data) {
         data.flare = {
-            id: "root",
             name: "root",
-            children: []
+            children: [],
+            meta: {
+                id: "root",
+            }
         };
-
-        let json = JSON.parse(data.json);
 
         // we could also just copy the whole section tree from the original
         // data.json structure, but since this is cheap I'd rather do the clean
         // thing and build it completely new, with only the necessary
         // attributes
-        for (let section of json.sections) {
+        for (let section of data.sections) {
             add_section(data.flare, section);
         }
 
-        for (let arg_name in json.arguments) {
-            let arg = json.arguments[arg_name];
-            let arg_node = make_node(arg);
-            // the same section might appear multiple times in .pcs, so lets
-            // just use a set here
-            let sections_to_add = new Set();
+        for (let arg_name in data.arguments) {
+            let arg = data.arguments[arg_name];
+            let arg_node = make_node(arg, "argument");
+
+            if (arg.section) {
+                let section = find_section(data.flare, arg.section.id);
+                // TODO: this should always be true, but I need to think about
+                // this more
+                if (section !== null) {
+                    add_node(section, arg_node);
+                }
+            } else {
+                add_node(data.flare, arg_node);
+            }
 
             for (let rel of arg.pcs) {
-                let section_id = rel.section;
-                let section = find_section(data.flare, section_id);
-
-                if (section !== null) {
-                    sections_to_add.add(section);
-                }
-
                 if (rel.role === "premise") {
-                    // rel.title refers to the id of the statement
                     add_node(arg_node, make_terminal(rel));
                 }
             }
-
-            for (let section of sections_to_add) {
-                add_node(section, arg_node);
-            }
-
-            if (sections_to_add.length === 0) {
-                add_node(data.flare, arg_node);
-            }
         }
 
-        for (let statement_name in json.statements) {
-            let s = json.statements[statement_name];
+        for (let statement_name in data.statements) {
+            let s = data.statements[statement_name];
             if (s.isUsedAsPremise) continue;
 
             if (s.members.length > 0 && "section" in s.members[0]) {
