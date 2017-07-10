@@ -13,6 +13,12 @@ The tree is constructed from the following rules:
 
 ## Usage
 
+### Tests
+
+There are some minimal tests in src/test.js that capture the rules given above.
+Run with `npm run test $path_to_argdown`, where `$path_to_argdown` is any
+.argdown file.
+
 ### Executable
 From src/ run `node index.js path/to/argdown path/to/json`,
 to read the .argdown file from path/to/argdown and write the resulting tree in
@@ -27,3 +33,25 @@ JSONExport plugin from
 to run it after that one. After it ran, the `data` object has a new attribute
 `data.flare` that contains the tree as a JS object, which you can then use in
 your application.
+
+### Flare Tree
+
+The flare data structure is a simple tree, every node has a `name` (given by
+the `title` of the original argdown data items), and `children`. The terminal
+nodes have a `size` instead of `children`. This is set to 1 for now, but it
+would be possible to make this a function of the argument structure.
+Additionally there a `meta` sub-object that saves the `id`, the `type`
+(*statement*, *argument* or *section*), section-type nodes also save their
+`level` in the section hierarchy, it's only used internally, though it might
+useful somewhere else as well.
+
+In pseudo-code
+```
+Node:
+    name
+    children|size
+    meta:
+        id
+        type
+        [level]
+```

@@ -72,6 +72,7 @@ class FlareExport {
             children: [],
             meta: {
                 id: "root",
+                type: "root",
             }
         };
 
