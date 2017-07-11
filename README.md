@@ -25,6 +25,15 @@ to read the .argdown file from path/to/argdown and write the resulting tree in
 json format to path/to/json.
 Both arguments can be omitted or replaced by '-' to use stdin/stdout.
 
+You can use the test visualization in the vis/ directory to check the result.
+Drop the output json in the same directory and start a local http server
+(`python -m http.server` is an easy one or install the `http-server` npm
+module). vis/flare.html shows the whole tree, vis/flare-zoom.html only ever
+shows two levels, but you can click on the nodes to zoom around. They were
+taken from [here](https://bl.ocks.org/mbostock/4063423) and
+[here](https://bl.ocks.org/mbostock/5944371) and slightly modified to log some
+debug info to the console.
+
 ### Plugin
 To use just the plugin in a different application, import FlareExport from
 src/FlareExport.js and add it to your argdown app. The plugin depends on the
