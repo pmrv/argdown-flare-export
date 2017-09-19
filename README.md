@@ -1,5 +1,7 @@
 # Argdown Flare Export
 
+Plugin for [argdown](https://github.com/christianvoigt/argdown-parser).
+
 Converts the internal representation of the debate to a tree-structure
 suitable for visualization as
 [here](https://bl.ocks.org/mbostock/4063423#flare.json).
