@@ -1,6 +1,6 @@
 # Argdown Flare Export
 
-Converts the internal JSON representation of the debate to a tree-structure
+Converts the internal representation of the debate to a tree-structure
 suitable for visualization as
 [here](https://bl.ocks.org/mbostock/4063423#flare.json).
 
@@ -23,7 +23,8 @@ Run with `npm run test $path_to_argdown`, where `$path_to_argdown` is any
 From src/ run `node index.js path/to/argdown path/to/json`,
 to read the .argdown file from path/to/argdown and write the resulting tree in
 json format to path/to/json.
-Both arguments can be omitted or replaced by '-' to use stdin/stdout.
+Both arguments can be omitted or replaced by '-' to use stdin/stdout. If only
+one of them is given this is assumed to be the input file.
 
 You can use the test visualization in the vis/ directory to check the result.
 Drop the output json in the same directory and start a local http server
